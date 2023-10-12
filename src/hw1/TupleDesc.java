@@ -28,6 +28,15 @@ public class TupleDesc {
     public int numFields() {
     	return types.length;
     }
+    public String[] getFields() {
+    	return fields;
+    }
+    public void setFields(String[] fields) {
+    	this.fields = fields;
+    }
+    public void setTypes(Type[] type) {
+    	this.types = type;
+    }
 
     /**
      * Gets the (possibly null) field name of the ith field of this TupleDesc.
