@@ -18,15 +18,15 @@ public class TupleDesc {
      * @param fieldAr array specifying the names of the fields. Note that names may be null.
      */
     public TupleDesc(Type[] typeAr, String[] fieldAr) {
-    	//your code here
+    	this.types = typeAr;
+    	this.fields = fieldAr;
     }
-
+ 
     /**
      * @return the number of fields in this TupleDesc
      */
     public int numFields() {
-        //your code here
-    	return 0;
+    	return types.length;
     }
 
     /**
@@ -37,8 +37,11 @@ public class TupleDesc {
      * @throws NoSuchElementException if i is not a valid field reference.
      */
     public String getFieldName(int i) throws NoSuchElementException {
-        //your code here
-    	return null;
+    	if(i < 0 || i > fields.length) {
+    		throw new NoSuchElementException();
+    	} else {
+    		return fields[i];
+    	}
     }
 
     /**
@@ -49,8 +52,14 @@ public class TupleDesc {
      * @throws NoSuchElementException if no field with a matching name is found.
      */
     public int nameToId(String name) throws NoSuchElementException {
-        //your code here
-    	return 0;
+        for(int i=0; i<types.length; i++) {
+        	if(getFieldName(i) == name) {
+        		return i;
+        	}
+        	else {
+        	}
+        }
+    	throw new NoSuchElementException();
     }
 
     /**
@@ -61,8 +70,11 @@ public class TupleDesc {
      * @throws NoSuchElementException if i is not a valid field reference.
      */
     public Type getType(int i) throws NoSuchElementException {
-        //your code here
-    	return null;
+    	if(i < 0 || i > types.length) {
+    		throw new NoSuchElementException();
+    	} else {
+    		return types[i];
+    	}
     }
 
     /**
@@ -70,10 +82,19 @@ public class TupleDesc {
      * Note that tuples from a given TupleDesc are of a fixed size.
      */
     public int getSize() {
-    	//your code here
-    	return 0;
+    	int size = 0;
+    	for(Type type: types) {
+    		//Type type = types[i];
+    		if(Type.INT == type) {
+    			size = size + 4;
+    		} else {
+    			size = size + 129;
+    		}
+    	}
+    	return size;
     }
-
+    
+    
     /**
      * Compares the specified object with this TupleDesc for equality.
      * Two TupleDescs are considered equal if they are the same size and if the
@@ -83,15 +104,24 @@ public class TupleDesc {
      * @return true if the object is equal to this TupleDesc.
      */
     public boolean equals(Object o) {
-    	//your code here
-    	return false;
+    	TupleDesc object = ((TupleDesc)o);
+    	
+    	if(this.getSize() != (object.getSize())) {
+    		return false;
+    	}
+    	for(int i = 0; i < this.numFields(); i++) {
+    		if(!this.getType(i).equals(object.getType(i))) {
+    			return false;
+    		}
+    	}
+    	return true;
     }
     
 
     public int hashCode() {
+	return 0;
         // If you want to use TupleDesc as keys for HashMap, implement this so
         // that equal objects have equals hashCode() results
-        throw new UnsupportedOperationException("unimplemented");
     }
 
     /**
@@ -101,7 +131,13 @@ public class TupleDesc {
      * @return String describing this descriptor.
      */
     public String toString() {
-        //your code here
-    	return "";
+    	String output = "";
+    	for(int i = 0; i < numFields(); i++) {
+    		output = output + getType(i) + getFieldName(i) + ", ";
+    	}
+    	return output;
     }
 }
+
+
+

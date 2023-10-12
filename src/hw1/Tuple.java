@@ -10,18 +10,24 @@ import java.util.HashMap;
  *
  */
 public class Tuple {
+	private TupleDesc tupleDesc;
+	private Field[] fields;
+	private int Pid;
+	private int Id;
 	
 	/**
 	 * Creates a new tuple with the given description
 	 * @param t the schema for this tuple
 	 */
 	public Tuple(TupleDesc t) {
-		//your code here
+		this.tupleDesc = t;
+		this.fields = new Field[tupleDesc.numFields()];
+		this.Pid = 0;
+		this.Id = -1;
 	}
 	
 	public TupleDesc getDesc() {
-		//your code here
-		return null;
+		return tupleDesc;
 	}
 	
 	/**
@@ -29,12 +35,11 @@ public class Tuple {
 	 * @return the page id of this tuple
 	 */
 	public int getPid() {
-		//your code here
-		return 0;
+		return Pid;
 	}
 
 	public void setPid(int pid) {
-		//your code here
+		this.Pid = pid;
 	}
 
 	/**
@@ -42,16 +47,15 @@ public class Tuple {
 	 * @return the slot where this tuple is stored
 	 */
 	public int getId() {
-		//your code here
-		return 0;
+		return Id;
 	}
 
 	public void setId(int id) {
-		//your code here
+		this.Id = id;
 	}
 	
 	public void setDesc(TupleDesc td) {
-		//your code here;
+		this.tupleDesc = td;
 	}
 	
 	/**
@@ -60,12 +64,11 @@ public class Tuple {
 	 * @param v the data
 	 */
 	public void setField(int i, Field v) {
-		//your code here
+		fields[i] = v;
 	}
 	
 	public Field getField(int i) {
-		//your code here
-		return null;
+		return fields[i];
 	}
 	
 	/**
@@ -74,8 +77,19 @@ public class Tuple {
 	 * the String columns to readable text).
 	 */
 	public String toString() {
-		//your code here
-		return "";
+		StringBuilder str = new StringBuilder();
+		for(int i = 0; i < fields.length; i++) {
+			if(i > 0) {
+				str.append(", ");
+			}
+			if(fields[i].getType() == Type.INT) {
+				str.append(((IntField) fields[i]).getValue());
+			} else {
+				str.append(((StringField) fields[i]).getValue());
+			}
+		}
+		return str.toString();
 	}
 }
+
 	

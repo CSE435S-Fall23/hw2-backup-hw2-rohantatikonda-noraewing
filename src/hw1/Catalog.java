@@ -15,13 +15,22 @@ import java.util.*;
  */
 
 public class Catalog {
+	private HashMap<String, Integer> nameToId;
+	private HashMap<Integer, String> idToName;
+	private HashMap<Integer, HeapFile> idToHeapFile;
+	private HashMap<Integer, String> idToPrimaryKey;
+	private HashMap<Integer, TupleDesc> idToTupleDesc;
 	
     /**
      * Constructor.
      * Creates a new, empty catalog.
      */
     public Catalog() {
-    	//your code here
+    		nameToId = new HashMap<>();
+    		idToName = new HashMap<>();
+    		idToHeapFile = new HashMap<>();
+    		idToPrimaryKey = new HashMap<>();
+    		idToTupleDesc = new HashMap<>();
     }
 
     /**
@@ -33,7 +42,12 @@ public class Catalog {
      * @param pkeyField the name of the primary key field
      */
     public void addTable(HeapFile file, String name, String pkeyField) {
-    	//your code here
+    	int id = file.getId();
+    	nameToId.put(name, id);
+    	idToName.put(id, name);
+    	idToHeapFile.put(id, file);
+    	idToPrimaryKey.put(id, pkeyField);
+    	idToTupleDesc.put(id, file.getTupleDesc());
     }
 
     public void addTable(HeapFile file, String name) {
@@ -44,9 +58,12 @@ public class Catalog {
      * Return the id of the table with a specified name,
      * @throws NoSuchElementException if the table doesn't exist
      */
-    public int getTableId(String name) {
-    	//your code here
-    	return 0;
+    public int getTableId(String name) throws NoSuchElementException {
+    	if(nameToId.containsKey(name)) {
+    		return nameToId.get(name);
+    	} else {
+    		throw new NoSuchElementException();
+    	}
     }
 
     /**
@@ -55,8 +72,11 @@ public class Catalog {
      *     function passed to addTable
      */
     public TupleDesc getTupleDesc(int tableid) throws NoSuchElementException {
-    	//your code here
-    	return null;
+    	if(idToTupleDesc.containsKey(tableid)) {
+    		return idToTupleDesc.get(tableid);
+    	} else {
+    		throw new NoSuchElementException();
+    	}
     }
 
     /**
@@ -66,28 +86,40 @@ public class Catalog {
      *     function passed to addTable
      */
     public HeapFile getDbFile(int tableid) throws NoSuchElementException {
-    	//your code here
-    	return null;
+    	if(idToHeapFile.containsKey(tableid)) {
+    		return idToHeapFile.get(tableid);
+    	} else {
+    		throw new NoSuchElementException();
+    	}
     }
 
     /** Delete all tables from the catalog */
     public void clear() {
-    	//your code here
+    	nameToId.clear();
+    	idToName.clear();
+    	idToHeapFile.clear();
+    	idToPrimaryKey.clear();
+    	idToTupleDesc.clear();
     }
 
     public String getPrimaryKey(int tableid) {
-    	//your code here
-    	return null;
+    	if(idToPrimaryKey.containsKey(tableid)) {
+    		return idToPrimaryKey.get(tableid);
+    	} else {
+    		throw new NoSuchElementException();
+    	}
     }
 
     public Iterator<Integer> tableIdIterator() {
-    	//your code here
-    	return null;
+    	return idToName.keySet().iterator();
     }
 
     public String getTableName(int id) {
-    	//your code here
-    	return null;
+    	if(idToName.containsKey(id)) {
+    		return idToName.get(id);
+    	} else {
+    		throw new NoSuchElementException();
+    	}
     }
     
     /**
@@ -144,4 +176,6 @@ public class Catalog {
         }
     }
 }
+
+
 
