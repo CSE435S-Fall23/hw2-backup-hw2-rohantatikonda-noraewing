@@ -2,6 +2,7 @@ package hw1;
 
 import java.sql.Types;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents a tuple that will contain a single row's worth of information
@@ -11,7 +12,7 @@ import java.util.HashMap;
  */
 public class Tuple {
 	private TupleDesc tupleDesc;
-	private Field[] fields;
+	private Map<Integer, Field> fields = new HashMap<Integer, Field>();
 	private int Pid;
 	private int Id;
 	
@@ -21,7 +22,7 @@ public class Tuple {
 	 */
 	public Tuple(TupleDesc t) {
 		this.tupleDesc = t;
-		this.fields = new Field[tupleDesc.numFields()];
+//		this.fields = new Field[tupleDesc.numFields()];
 		this.Pid = 0;
 		this.Id = -1;
 	}
@@ -64,11 +65,11 @@ public class Tuple {
 	 * @param v the data
 	 */
 	public void setField(int i, Field v) {
-		fields[i] = v;
+		this.fields.put(i,v);
 	}
 	
 	public Field getField(int i) {
-		return fields[i];
+		return fields.get(i);
 	}
 	
 	/**
@@ -78,15 +79,8 @@ public class Tuple {
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		for(int i = 0; i < fields.length; i++) {
-			if(i > 0) {
-				str.append(", ");
-			}
-			if(fields[i].getType() == Type.INT) {
-				str.append(((IntField) fields[i]).getValue());
-			} else {
-				str.append(((StringField) fields[i]).getValue());
-			}
+		for(int i = 0; i < fields.size(); i++) {
+			str.append(getField(i).toString());
 		}
 		return str.toString();
 	}

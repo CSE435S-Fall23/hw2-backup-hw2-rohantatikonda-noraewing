@@ -119,7 +119,7 @@ public class Relation {
 			for(int j = 0; j < other.getTuples().size(); ++j) {
 				if(tuples.get(i).getField(field1).compare(RelationalOperator.EQ, other.getTuples().get(j).getField(field2))) {
 					Tuple newTuple = new Tuple(newTd);
-					for(int k = 0; k < newTypes.length; ++k) {
+					for(int k = 0; k < newFields.length; ++k) {
 						newTuple.setField(k, tuples.get(i).getField(k));
 						newTuple.setField(k+td.numFields(), other.getTuples().get(j).getField(k));
 					}
