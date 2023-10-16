@@ -12,7 +12,6 @@ import java.util.Map;
  */
 public class Tuple {
 	private TupleDesc tupleDesc;
-	private Map<Integer, Field> fields = new HashMap<Integer, Field>();
 	private int Pid;
 	private int Id;
 	
